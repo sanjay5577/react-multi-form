@@ -3,6 +3,10 @@ import {
   } from "@mui/material";
   import { Box } from "@mui/system";
   import { useTheme } from "@mui/material/styles";
+  import Image from 'mui-image'
+
+
+  import logo from "./assests/job_10485121.png"
 
    const Navbar = () => {
   const theme = useTheme();
@@ -21,7 +25,8 @@ import {
       
       sx={{ border: '1px solid grey' , backgroundColor :'#1976d2', color : 'white', width: '100%', borderRadius: '10px' }}
 >
-
+  
+      <Image src={logo} alt="form img" height="60" width ={60}/>
             <Typography variant= {isMobile ? 'h4' : 'h3'} component="h2" mb={2}>
               Multi Step Form
        </Typography>

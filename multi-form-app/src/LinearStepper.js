@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 
 import {
   Typography,
-  TextField,
   Button,
   Stepper,
   Step,
@@ -10,15 +9,17 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 
-import{useForm  ,FormProvider  , useFormContext , Controller } from "react-hook-form";
-import Navbar from "./navbar"
+import{useForm  ,FormProvider } from "react-hook-form";
+import Navbar from "./navbar";
+import PersonalInformation from "./components/personalinformation";
+import AddressInformation from "./components/addressinformation";
+import Confirmation from "./components/confirmation"
 
 
 
 
 
 const LinearStepper = () => {
-
   
   const [activeStep, setActiveStep] = useState(0);
 
@@ -41,21 +42,27 @@ const savedMultiForm = JSON.parse(localStorage.getItem('react-multi-form-data'))
 
   const {
     trigger,
-  
+    clearErrors,
   } = methods;
 
-  console.log(formData);
+  // console.log(formData);
 
  const handleChange =(e)=>{
   setFormData(prevData => ({
     ...prevData,
     [e.target.name]: e.target.value
   }));
-  localStorage.setItem("react-multi-form-data", JSON.stringify({
-    ...formData,
-    [e.target.name]: e.target.value
-  }));
+
  }
+
+ useEffect (()=>{
+  localStorage.setItem("react-multi-form-data", JSON.stringify({
+    ...formData
+  }));
+
+ }, [formData])
+
+ 
 
 function getSteps() {
   return [
@@ -66,331 +73,26 @@ function getSteps() {
 }
 
 
- const PersonalInformation = () => {
-  const { control , formState: {errors},} = useFormContext(); 
-
-  return( 
-    <Box className="content" mt={2}>
-      <Controller  
-        control={control}
-        name="name"
-        rules ={{required : "Name is required.",
-        validate: (value) =>
-              value.trim() !== "" || "Name cannot be empty.",
-        }}
-        render={({ field }) => (
-          <TextField
-            id="name"
-            label="Name"
-            variant="outlined"
-            title="Name"
-            placeholder="Enter Name"
-            fullWidth
-            {...field}  // Spread the field props which includes value and onChange
-            onBlur={(e) => {
-              field.onBlur();  // Call react-hook-form's onBlur
-              handleChange(e)
-            }}
-
-            error ={Boolean(errors.name)}
-            helperText = {errors.name?.message}
-          />
-        )}
-      />
-
-      <Controller  
-        control={control}
-        name="email"
-        rules ={{required : "Email is required.",
-        pattern: {
-          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-          message: "Invalid email address",
-        },
-      }}
-        render={({ field }) => (
-          <TextField
-            id="email"
-            label="Email"
-            variant="outlined"
-            placeholder="Enter Your Email"
-            fullWidth
-            margin="normal"  
-            {...field}  // Spread the field props
-            onBlur={(e) => {
-              field.onBlur();  // Call react-hook-form's onBlur
-              handleChange(e)
-            }}
-            error ={Boolean(errors.email)}
-            helperText = {errors.email?.message}
-          />
-        )}
-      />
-
-      <Controller  
-        control={control}
-        name="phonenumber"
-        rules ={{required : "Phone Number is required.",
-        pattern: {
-          value: /^\d{10}$/, // Pattern for 10-digit phone number
-          message: "Invalid phone number, must be 10 digits",
-        },
-        validate: {
-          notAllZeros: (value) =>
-            value !== "0000000000" || "Phone number cannot be all zeros",
-        },
-        }}
-        render={({ field }) => (
-          <TextField
-            id="phone-number"
-            label="Phone Number"
-            variant="outlined"
-            placeholder="Enter Your Phone Number"
-            fullWidth
-            margin="normal"
-            {...field}  // Spread the field props
-            onBlur={(e) => {
-              field.onBlur();  // Call react-hook-form's onBlur
-              handleChange(e)
-            }}
-            error ={Boolean(errors.phonenumber)}
-            helperText = {errors.phonenumber?.message}
-          />
-        )}
-      />
-    </Box>
-  )
-}
-
-
-const AddressInformation = ()=> {
-  const { control , formState: {errors},} = useFormContext(); 
-  return(
-    <>
-          <Controller  
-        control={control}
-        name="addressline1"
-        rules ={{required : "Address Line 1 is required.",
-        validate: (value) =>
-              value.trim() !== "" || "Address Line 1 cannot be empty.",
-        
-        }}
-        render={({ field }) => (
-          <TextField
-          id="addressline1"
-          label="Address Line 1"
-          variant="outlined"
-          placeholder="Enter Your Address Line 1"
-          fullWidth
-          margin="normal"
-            {...field}  // Spread the field props
-            onBlur={(e) => {
-              field.onBlur();  // Call react-hook-form's onBlur
-              handleChange(e)
-            }}
-            error = {Boolean(errors.addressline1)}
-            helperText = {errors.addressline1?.message}
-          />
-        )}
-      />
-       
-       <Controller  
-        control={control}
-        name="addressline2"
-        rules ={{required : "Address Line 2 is required.",
-        validate: (value) =>
-              value.trim() !== "" || "Address Line 2 cannot be empty.",
-        }}
-        render={({ field }) => (
-          <TextField
-          id="addressline2"
-          label="Address Line 2"
-          variant="outlined"
-          placeholder="Enter Your Address Line 2"
-          fullWidth
-          margin="normal"
-            {...field}  // Spread the field props
-            onBlur={(e) => {
-              field.onBlur();  // Call react-hook-form's onBlur
-              handleChange(e)
-            }}
-          
-          error ={Boolean(errors.addressline2)}
-          helperText = {errors.addressline2?.message}
-          />
-        )}
-      />
-
-<Controller  
-        control={control}
-        name="city"
-        rules ={{required : "City is required.",
-        validate: (value) =>
-              value.trim() !== "" || "City cannot be empty.",
-        }}
-        render={({ field }) => (
-          <TextField
-          id="city"
-          label="City"
-          variant="outlined"
-          placeholder="Enter Your City Name"
-          fullWidth
-          margin="normal"
-            {...field}  // Spread the field props
-            onBlur={(e) => {
-              field.onBlur();  // Call react-hook-form's onBlur
-              handleChange(e)
-            }}
-            error ={Boolean(errors.city)}
-            helperText = {errors.city?.message}
-          />
-        )}
-      />
-        
-        <Controller  
-        control={control}
-        name="state"
-        rules ={{required : "State is required.",
-        validate: (value) =>
-              value.trim() !== "" || "State cannot be empty.",
-        }}
-        render={({ field }) => (
-          <TextField
-          id="state"
-          label="State"
-          variant="outlined"
-          placeholder="Enter Your State Name"
-          fullWidth
-          margin="normal"
-            {...field}  // Spread the field props
-            onBlur={(e) => {
-              field.onBlur();  // Call react-hook-form's onBlur
-              handleChange(e)
-            }}
-            error ={Boolean(errors.state)}
-            helperText = {errors.state?.message}
-          />
-        )}
-      />
-
-
-<Controller  
-        control={control}
-        name="zipcode"
-        rules ={{required : "Zip Code is required.",
-        pattern: {
-                value: /^\d{6}$/, // Pattern for 10-digit phone number
-                message: "Invalid Zip Code, must be 6 digits",
-              },
-         validate: {
-                notAllZeros: (value) =>
-                  value !== "000000" || "Zip Code cannot be all zeros",
-         },
-        }}
-        render={({ field }) => (
-          <TextField
-          id="zipcode"
-          label="Zip Code"
-          variant="outlined"
-          placeholder="Enter Your Zip Code"
-          fullWidth
-          margin="normal"
-            {...field}  // Spread the field props
-            onBlur={(e) => {
-              field.onBlur();  // Call react-hook-form's onBlur
-              handleChange(e)
-            }}
-            error ={Boolean(errors.zipcode)}
-            helperText = {errors.zipcode?.message}
-          />
-        )}
-      />
-
-
-    </>
-  )
-}
-
-const Confirmation = ()=>{
-  return(
-    <>
-     <Typography variant="h6" component="span"  sx={{ color :'#1976d2',}}>
-        Name     : 
-      </Typography>
-      <Typography variant="h6" component="span">
-        {` ${formData.name}`}
-      </Typography>
-      <br />
-      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
-        Email     : 
-      </Typography>
-      <Typography variant="h6" component="span">
-        {` ${formData.email}`}
-      </Typography>
-      <br />
-      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
-        Phone Number : 
-      </Typography>
-      <Typography variant="h6" component="span">
-        {` ${formData.phonenumber}`}
-      </Typography>
-      <br />
-      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
-        Address Line 1 : 
-      </Typography>
-      <Typography variant="h6" component="span">
-        {` ${formData.addressline1}`}
-      </Typography>
-      <br />
-      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
-      Address Line 2 : 
-      </Typography>
-      <Typography variant="h6" component="span">
-        {` ${formData.addressline2}`}
-      </Typography>
-      <br />
-      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
-        City         : 
-      </Typography>
-      <Typography variant="h6" component="span">
-        {` ${formData.city}`}
-      </Typography>
-      <br />
-      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
-        State        : 
-      </Typography>
-      <Typography variant="h6" component="span">
-        {` ${formData.state}`}
-      </Typography>
-      <br />
-      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
-        Zip Code      : 
-      </Typography>
-      <Typography variant="h6" component="span">
-        {` ${formData.zipcode}`}
-      </Typography>
-    </>
-  )
-}
 
 function getStepContent(step) {
   switch (step) {
     case 0:
       return (
         <>
-          <PersonalInformation/>
+          <PersonalInformation handleChange = {handleChange}/>
           </>
       );
 
     case 1:
       return (
         <>
-          <AddressInformation/>
+          <AddressInformation handleChange = {handleChange}/>
         </>
       );
     case 2:
       return (
         <>
-           <Confirmation/>
+           <Confirmation formData={formData}/>
         </>
       );
     default:
@@ -409,10 +111,6 @@ function getStepContent(step) {
     if (isStepValid) {
       setActiveStep((prevStep) => prevStep + 1);
     }
-    // if(! Boolean(Object.keys(methods.formState.errors).length)){
-    //   setActiveStep(activeStep + 1);
-    // }
-    
    
   };
 
@@ -422,6 +120,7 @@ function getStepContent(step) {
 
 
   const handleBack = () => {
+    clearErrors();
     setActiveStep(activeStep - 1);
   };
 
@@ -431,7 +130,9 @@ function getStepContent(step) {
 
 
   return (
-    <div>
+   
+    <Box
+     >
       <Navbar/>
       <Stepper alternativeLabel activeStep={activeStep}>
         {steps.map((step, index) => {
@@ -459,7 +160,7 @@ function getStepContent(step) {
 
            <FormProvider  {...methods}>
           <form>{getStepContent(activeStep)}</form>
-          </FormProvider >
+          
           <Box
           display="flex"
           justifyContent="center"
@@ -480,9 +181,12 @@ function getStepContent(step) {
             {activeStep === steps.length - 1 ? "Submit" : "Next"}
           </Button>
           </Box>
+
+          </FormProvider >
         </>
       )}
-    </div>
+    </Box>
+
   );
 };
 
