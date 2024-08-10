@@ -10,7 +10,9 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 
-import{useForm  ,FormProvider  , useFormContext , Controller } from "react-hook-form"
+import{useForm  ,FormProvider  , useFormContext , Controller } from "react-hook-form";
+import Navbar from "./navbar"
+
 
 
 
@@ -68,7 +70,7 @@ function getSteps() {
   const { control , formState: {errors},} = useFormContext(); 
 
   return( 
-    <Box className="content">
+    <Box className="content" mt={2}>
       <Controller  
         control={control}
         name="name"
@@ -311,59 +313,59 @@ const AddressInformation = ()=> {
 const Confirmation = ()=>{
   return(
     <>
-     <Typography variant="h6" component="span">
-        Name : 
+     <Typography variant="h6" component="span"  sx={{ color :'#1976d2',}}>
+        Name     : 
       </Typography>
-      <Typography variant="body1" component="span">
+      <Typography variant="h6" component="span">
         {` ${formData.name}`}
       </Typography>
       <br />
-      <Typography variant="h6" component="span">
-        Email : 
+      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
+        Email     : 
       </Typography>
-      <Typography variant="body1" component="span">
+      <Typography variant="h6" component="span">
         {` ${formData.email}`}
       </Typography>
       <br />
-      <Typography variant="h6" component="span">
-        Phone Number: 
+      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
+        Phone Number : 
       </Typography>
-      <Typography variant="body1" component="span">
+      <Typography variant="h6" component="span">
         {` ${formData.phonenumber}`}
       </Typography>
       <br />
-      <Typography variant="h6" component="span">
-        Address Line 1: 
+      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
+        Address Line 1 : 
       </Typography>
-      <Typography variant="body1" component="span">
+      <Typography variant="h6" component="span">
         {` ${formData.addressline1}`}
       </Typography>
       <br />
-      <Typography variant="h6" component="span">
-      Address Line 2: 
+      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
+      Address Line 2 : 
       </Typography>
-      <Typography variant="body1" component="span">
+      <Typography variant="h6" component="span">
         {` ${formData.addressline2}`}
       </Typography>
       <br />
-      <Typography variant="h6" component="span">
-        City : 
+      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
+        City         : 
       </Typography>
-      <Typography variant="body1" component="span">
+      <Typography variant="h6" component="span">
         {` ${formData.city}`}
       </Typography>
       <br />
-      <Typography variant="h6" component="span">
-        State : 
+      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
+        State        : 
       </Typography>
-      <Typography variant="body1" component="span">
+      <Typography variant="h6" component="span">
         {` ${formData.state}`}
       </Typography>
       <br />
-      <Typography variant="h6" component="span">
-        Zip Code: 
+      <Typography variant="h6" component="span"sx={{ color :'#1976d2',}}>
+        Zip Code      : 
       </Typography>
-      <Typography variant="body1" component="span">
+      <Typography variant="h6" component="span">
         {` ${formData.zipcode}`}
       </Typography>
     </>
@@ -430,6 +432,7 @@ function getStepContent(step) {
 
   return (
     <div>
+      <Navbar/>
       <Stepper alternativeLabel activeStep={activeStep}>
         {steps.map((step, index) => {
           const labelProps = {};
@@ -448,7 +451,7 @@ function getStepContent(step) {
       </Stepper>
 
       {activeStep === steps.length ? (
-        <Typography variant="h5" align="center">
+        <Typography variant="h5" align="center" sx={{ color :'#1976d2',}} mt={2}>
           Form Submitted Successfully, Thank You!!
         </Typography>
       ) : (
@@ -457,11 +460,16 @@ function getStepContent(step) {
            <FormProvider  {...methods}>
           <form>{getStepContent(activeStep)}</form>
           </FormProvider >
+          <Box
+          display="flex"
+          justifyContent="center"
+          sx={{  width: '100%' }}
+          >
           <Button
             disabled={activeStep === 0}
             onClick={handleBack}
           >
-            back
+            Back
           </Button>
 
           <Button
@@ -471,6 +479,7 @@ function getStepContent(step) {
           >
             {activeStep === steps.length - 1 ? "Submit" : "Next"}
           </Button>
+          </Box>
         </>
       )}
     </div>
