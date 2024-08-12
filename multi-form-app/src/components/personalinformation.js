@@ -18,6 +18,10 @@ const PersonalInformation = ({handleChange}) => {
           rules ={{required : "Name is required.",
           validate: (value) =>
                 value.trim() !== "" || "Name cannot be empty.",
+          pattern: {
+            value: /^[a-zA-Z][a-zA-Z ]*$/,
+            message: "Name should only contain letters",
+          },
           }}
           render={({ field }) => (
             <TextField
